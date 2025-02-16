@@ -1,5 +1,4 @@
 import { FunctionComponent } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import {
@@ -9,32 +8,39 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+import AlbumArt from '../AlbumArt/AlbumArt';
+
 type PlaylistCardProps = Pick<
   SpotifyApi.PlaylistBaseObject,
   'name' | 'description' | 'id'
-> & { imageUrl: string };
+> & { images: SpotifyApi.ImageObject[] };
 
 const PlaylistCard: FunctionComponent<PlaylistCardProps> = ({
   description,
   id,
-  imageUrl,
+  images,
   name,
 }) => {
   return (
     <Link href={`/playlists/${id}`}>
       <Card className="w-[300px]">
-        <Image
-          src={imageUrl}
-          alt="Card Image"
-          width={300}
-          height={300}
-          className="h-[300px] w-[300px] rounded-t-lg object-cover"
-          style={{ aspectRatio: '300/300' }}
-        />
+        <span className="h-[300px] overflow-hidden">
+          <AlbumArt
+            altText="Card Image"
+            images={images}
+            size={300}
+            variant="card"
+          />
+        </span>
         <CardContent className="p-4">
-          <CardTitle className="text-h5 font-bold">{name}</CardTitle>
+          <CardTitle className="line-clamp-1 text-h5 font-bold">
+            {name}
+          </CardTitle>
           <CardDescription className="mt-2 text-gray-500 dark:text-gray-400">
-            {description || ' '}
+            <div
+              className="line-clamp-2"
+              dangerouslySetInnerHTML={{ __html: description || ' ' }}
+            />
           </CardDescription>
         </CardContent>
       </Card>

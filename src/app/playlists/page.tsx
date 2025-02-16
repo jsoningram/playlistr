@@ -26,20 +26,28 @@ const Playlists: FunctionComponent = () => {
     return null;
   }
 
+  console.log('!_###_! playlist', {
+    playlists,
+  });
+
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
+    <section className="grid grid-cols-1 place-items-center gap-6 sm:grid-cols-4">
       {playlists.items.map((pl, i) => {
+        if (!pl.images || !pl.tracks.total) {
+          return null;
+        }
+
         return (
           <PlaylistCard
             key={`PlaylistCard-${i}`}
             name={pl.name}
             description={pl.description}
             id={pl.id}
-            imageUrl={pl.images[0].url}
+            images={pl.images}
           />
         );
       })}
-    </div>
+    </section>
   );
 };
 

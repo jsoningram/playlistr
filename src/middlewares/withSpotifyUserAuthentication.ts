@@ -11,12 +11,21 @@ import {
   type MiddlewareFactory,
 } from '@/types/Middleware';
 
+const Scopes = [
+  'playlist-read-private',
+  'playlist-read-collaborative',
+  'playlist-modify-private',
+  'playlist-modify-public',
+  'user-read-private',
+  'user-read-email',
+];
+
 /**
  * Redirects user login request to provider's authentication screen
  *
  * @function withUserAuthentication
  *
- * @returns {CustomMiddleware} Description
+ * @returns {CustomMiddleware}
  */
 const withSpotifyUserAuthentication: MiddlewareFactory = (
   next,
@@ -35,7 +44,7 @@ const withSpotifyUserAuthentication: MiddlewareFactory = (
         client_id: process.env.SPOTIFY_CLIENT_ID || '',
         redirect_uri: `${BaseUrl}/api/callback`,
         response_type: 'code',
-        scope: 'user-read-private user-read-email',
+        scope: Scopes.join(', '),
         state: stateKey?.value || '',
       }).toString();
 
